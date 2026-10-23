@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import AlbumCard from '../../components/AlbumCard.astro';
+import { getAlbums } from '../../lib/content';
+import { photosForAlbum } from '../../lib/photos';
+
+const albums = await getAlbums();
+---
+
+<Base title="Photography" description="Photo albums and series.">
+  <p class="eyebrow">Photography</p>
+  <h1>Albums</h1>
+  <div class="card-grid section">
+    {albums.map((a) => <AlbumCard album={a} count={photosForAlbum(a.id).length} />)}
+  </div>
+</Base>

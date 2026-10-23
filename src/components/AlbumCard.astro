@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { url, formatDate } from '../lib/url';
+
+interface Props {
+  album: CollectionEntry<'photography'>;
+  count?: number;
+}
+
+const { album, count } = Astro.props;
+const { title, date, cover, location } = album.data;
+const href = url(`/photography/${album.id}`);
+---
+
+<a class="album" href={href}>
+  <Image
+    src={cover}
+    alt={title}
+    width={960}
+    widths={[480, 960]}
+    sizes="(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw"
+  />
+  <span class="caption">
+    <strong>{title}</strong>
+    <span class="meta">
+      {formatDate(date)}{location && ` · ${location}`}{count !== undefined && ` · ${count} photos`}
+    </span>
+  </span>
+</a>
+
+<style>
+  .album {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-elevated);
+  }
+
+  .album :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+
+  .album:hover :global(img) {
+    transform: scale(1.03);
+  }
+
+  .caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.5rem 1rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.7), transparent);
+  }
+
+  .meta {
+    font-size: 0.85rem;
+    opacity: 0.85;
+  }
+</style>

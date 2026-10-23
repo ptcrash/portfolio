@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site.config';
+---
+
+<Base title="About" description={`About ${site.name}.`}>
+  <p class="eyebrow">About</p>
+  <h1>Hi, I'm {site.name}.</h1>
+  <div class="prose">
+    <p>
+      Replace this with a short bio. Who you are, what you build, what you like to shoot,
+      and the kind of work you want more of.
+    </p>
+    <p>
+      A good structure: one paragraph on your development background and the stack you work in,
+      one on your photography and video style, and one on what you are doing now.
+    </p>
+    <h2>Get in touch</h2>
+    <p>
+      Email <a href={`mailto:${site.email}`}>{site.email}</a>, or find me on
+      {site.links.map((l, i) => (
+        <>
+          <a href={l.href} target="_blank" rel="me noopener">{l.label}</a>{i < site.links.length - 1 ? ', ' : '.'}
+        </>
+      ))}
+    </p>
+  </div>
+</Base>

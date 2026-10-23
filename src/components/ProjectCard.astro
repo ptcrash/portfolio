@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { url, formatDate } from '../lib/url';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, description, date, tags, cover } = project.data;
+const href = url(`/projects/${project.id}`);
+---
+
+<article class="card">
+  {cover && (
+    <a href={href} class="cover" tabindex="-1" aria-hidden="true">
+      <Image src={cover} alt="" width={720} widths={[360, 720]} sizes="(min-width: 700px) 360px, 100vw" />
+    </a>
+  )}
+  <div class="body">
+    <p class="eyebrow">{formatDate(date)}</p>
+    <h3><a href={href}>{title}</a></h3>
+    <p class="muted">{description}</p>
+    {tags.length > 0 && (
+      <ul class="tags">
+        {tags.map((t) => <li>{t}</li>)}
+      </ul>
+    )}
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elevated);
+    overflow: hidden;
+    transition: border-color 150ms ease;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+  }
+
+  .cover :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .body {
+    padding: 1rem 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .body p {
+    margin: 0;
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  h3 a {
+    text-decoration: none;
+  }
+
+  h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card {
+    position: relative;
+  }
+
+  .tags {
+    position: relative;
+    z-index: 1;
+  }
+</style>

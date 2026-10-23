@@ -1,0 +1,46 @@
+---
+import { site } from '../site.config';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container row">
+    <span class="muted">© {year} {site.name}</span>
+    <nav aria-label="Social">
+      {site.links.map((l) => (
+        <a href={l.href} rel="me noopener" target="_blank">{l.label}</a>
+      ))}
+      <a href={`mailto:${site.email}`}>Email</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding-block: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+  }
+
+  nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  nav a {
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    color: var(--fg);
+  }
+</style>

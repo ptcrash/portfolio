@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import AlbumCard from '../components/AlbumCard.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
+import { site } from '../site.config';
+import { url } from '../lib/url';
+import { getProjects, getAlbums, getVideos } from '../lib/content';
+import { photosForAlbum } from '../lib/photos';
+
+const projects = await getProjects();
+const featuredProjects = (projects.filter((p) => p.data.featured).length
+  ? projects.filter((p) => p.data.featured)
+  : projects
+).slice(0, 3);
+
+const albums = (await getAlbums()).slice(0, 3);
+const videos = await getVideos();
+const featuredVideo = videos.find((v) => v.data.featured) ?? videos[0];
+---
+
+<Base>
+  <section class="hero">
+    <h1>{site.name}</h1>
+    <p class="lead">{site.tagline}</p>
+    <p class="muted prose">{site.description}</p>
+    <div class="actions">
+      <a class="button primary" href={url('/projects')}>See projects</a>
+      <a class="button" href={url('/photography')}>Photography</a>
+      <a class="button" href={url('/videography')}>Video</a>
+    </div>
+  </section>
+
+  {featuredProjects.length > 0 && (
+    <section class="section">
+      <div class="section-head">
+        <h2>Projects</h2>
+        <a href={url('/projects')}>All projects</a>
+      </div>
+      <div class="card-grid">
+        {featuredProjects.map((p) => <ProjectCard project={p} />)}
+      </div>
+    </section>
+  )}
+
+  {albums.length > 0 && (
+    <section class="section">
+      <div class="section-head">
+        <h2>Photography</h2>
+        <a href={url('/photography')}>All albums</a>
+      </div>
+      <div class="card-grid">
+        {albums.map((a) => <AlbumCard album={a} count={photosForAlbum(a.id).length} />)}
+      </div>
+    </section>
+  )}
+
+  {featuredVideo && (
+    <section class="section">
+      <div class="section-head">
+        <h2>Video</h2>
+        <a href={url('/videography')}>All videos</a>
+      </div>
+      <VideoEmbed url={featuredVideo.data.url} title={featuredVideo.data.title} thumbnail={featuredVideo.data.thumbnail} />
+      <p class="video-caption">
+        <strong>{featuredVideo.data.title}</strong>
+        {featuredVideo.data.description && <span class="muted"> — {featuredVideo.data.description}</span>}
+      </p>
+    </section>
+  )}
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(1rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem);
+  }
+
+  .lead {
+    font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+
+  .video-caption {
+    margin-top: 0.75rem;
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getProjects } from '../../lib/content';
+import { url, formatDate } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { title, description, date, tags, repo, demo, cover } = project.data;
+const { Content } = await render(project);
+---
+
+<Base title={title} description={description} image={cover?.src}>
+  <article>
+    <p class="eyebrow"><a href={url('/projects')}>Projects</a> · {formatDate(date)}</p>
+    <h1>{title}</h1>
+    <p class="muted lead">{description}</p>
+
+    <div class="meta">
+      {tags.length > 0 && (
+        <ul class="tags">
+          {tags.map((t) => <li>{t}</li>)}
+        </ul>
+      )}
+      <div class="links">
+        {repo && <a class="button" href={repo} target="_blank" rel="noopener">Source</a>}
+        {demo && <a class="button primary" href={demo} target="_blank" rel="noopener">Live demo</a>}
+      </div>
+    </div>
+
+    {cover && <Image class="cover" src={cover} alt="" width={1400} widths={[700, 1400]} sizes="(min-width: 1100px) 1040px, 100vw" />}
+
+    <div class="prose body">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .lead {
+    font-size: 1.2rem;
+    max-width: var(--measure);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-block: 1.5rem;
+  }
+
+  .links {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .cover {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    margin-bottom: 2rem;
+  }
+
+  .body {
+    margin-top: 1rem;
+  }
+</style>

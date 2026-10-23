@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
+import { render } from 'astro:content';
+import { getVideos } from '../lib/content';
+import { formatDate } from '../lib/url';
+
+const videos = await getVideos();
+const rendered = await Promise.all(videos.map((v) => render(v)));
+---
+
+<Base title="Video" description="Videography and film work.">
+  <p class="eyebrow">Videography</p>
+  <h1>Video</h1>
+
+  <div class="list">
+    {videos.map((v, i) => {
+      const { Content } = rendered[i];
+      return (
+        <article class="entry" id={v.id}>
+          <VideoEmbed url={v.data.url} title={v.data.title} thumbnail={v.data.thumbnail} />
+          <div class="text">
+            <p class="eyebrow">
+              {formatDate(v.data.date)}{v.data.role && ` · ${v.data.role}`}
+            </p>
+            <h2>{v.data.title}</h2>
+            {v.data.description && <p class="muted">{v.data.description}</p>}
+            <div class="prose"><Content /></div>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</Base>
+
+<style>
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 6vw, 4rem);
+    margin-top: 2rem;
+  }
+
+  .text {
+    margin-top: 1rem;
+    max-width: var(--measure);
+  }
+
+  .text h2 {
+    font-size: 1.5rem;
+  }
+</style>

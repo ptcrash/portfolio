@@ -1,0 +1,38 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PhotoGrid from '../../components/PhotoGrid.astro';
+import { getAlbums } from '../../lib/content';
+import { sectionsForAlbum } from '../../lib/photos';
+import { url, formatDate } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const albums = await getAlbums();
+  return albums.map((album) => ({ params: { id: album.id }, props: { album } }));
+}
+
+const { album } = Astro.props;
+const { title, description, date, location, cover } = album.data;
+const sections = sectionsForAlbum(album.id, album.data.sections);
+const photoCount = sections.reduce((n, s) => n + s.photos.length, 0);
+const { Content } = await render(album);
+
+if (photoCount === 0) {
+  throw new Error(
+    `Album "${album.id}" has no photos. Add images to src/assets/photos/${album.id}/`,
+  );
+}
+---
+
+<Base title={title} description={description} image={cover.src}>
+  <p class="eyebrow">
+    <a href={url('/photography')}>Photography</a> · {formatDate(date)}{location && ` · ${location}`}
+  </p>
+  <h1>{title}</h1>
+  {description && <p class="muted prose">{description}</p>}
+  <div class="prose"><Content /></div>
+
+  <div class="section">
+    <PhotoGrid sections={sections} />
+  </div>
+</Base>

@@ -1,0 +1,72 @@
+---
+import { site } from '../site.config';
+import { url } from '../lib/url';
+
+const nav = [
+  { label: 'Projects', href: '/projects' },
+  { label: 'Photography', href: '/photography' },
+  { label: 'Video', href: '/videography' },
+  { label: 'About', href: '/about' },
+];
+
+const current = Astro.url.pathname;
+const isActive = (href: string) => current.startsWith(url(href));
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href={url('/')}>{site.name}</a>
+    <nav aria-label="Primary">
+      {nav.map((item) => (
+        <a href={url(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 64px;
+    flex-wrap: wrap;
+    padding-block: 0.5rem;
+  }
+
+  .brand {
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  nav {
+    display: flex;
+    gap: clamp(0.75rem, 2.5vw, 1.5rem);
+    flex-wrap: wrap;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: var(--fg-muted);
+    padding-block: 0.25rem;
+    border-bottom: 2px solid transparent;
+  }
+
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--fg);
+    border-bottom-color: var(--accent);
+  }
+</style>
