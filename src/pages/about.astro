@@ -1,20 +1,41 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site } from '../site.config';
+import { url } from '../lib/url';
 ---
 
-<Base title="About" description={`About ${site.name}.`}>
+<Base title="About" description={`About ${site.name}: security engineer by day, photographer and filmmaker the rest of the time, based in New York.`}>
   <p class="eyebrow">About</p>
-  <h1>Hi, I'm {site.name}.</h1>
+  <h1>Hi, I'm Johnny.</h1>
   <div class="prose">
     <p>
-      Replace this with a short bio. Who you are, what you build, what you like to shoot,
-      and the kind of work you want more of.
+      I'm a photographer and developer in New York. Most of what's on this site is work I
+      made for communities I belong to, and places I went with a camera.
     </p>
+
     <p>
-      A good structure: one paragraph on your development background and the stack you work in,
-      one on your photography and video style, and one on what you are doing now.
+      By day I work in security. I build automation in Tines, own our privileged access
+      management platform, and review infrastructure proposals from engineering. It's work
+      about trust: who gets access to what, and how you know. It also explains the shape of
+      the projects here. I care most about systems that keep working after the person who
+      built them walks away, so you'll see tokens instead of bespoke CSS, settings the
+      client can edit instead of hard-coded copy, and documentation that says why.
     </p>
+
+    <p>
+      Lately most of that building has been for
+      <a href={url('/projects/gotham-brand-system')}>Gotham Knights RFC</a>, New York's LGBT
+      rugby club: the brand system, the website, the storefront, and the drag show's
+      look. One club, a lot of surfaces.
+    </p>
+
+    <p>
+      The photography and video are the part I'd make even if nobody asked. I shoot the
+      people and places around me, and I want to make more work about queer athletes and
+      the people who hold their communities together. If that's something you're working
+      on, I'd like to hear about it.
+    </p>
+
     <h2>Get in touch</h2>
     <p>
       Email <a href={`mailto:${site.email}`}>{site.email}</a>, or find me on
