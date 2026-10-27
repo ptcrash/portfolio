@@ -21,9 +21,9 @@ to `main`.
    add `ptcra.sh` and `localhost` to its domains, and paste the project ID into
    `adobeFontsKit` in `src/site.config.ts`. Until then the site falls back to
    Helvetica Neue and the system mono.
-2. **Bio**: edit `src/pages/about.astro`.
-3. **Favicon**: replace `public/favicon.svg` and `public/favicon.ico`.
-4. **Colors**: the palette is a handful of CSS variables at the top of
+3. **Bio**: edit `src/pages/about.astro`.
+4. **Favicon**: replace `public/favicon.svg` and `public/favicon.ico`.
+5. **Colors**: the palette is a handful of CSS variables at the top of
    `src/styles/global.css`. Light and dark both come from the visitor's OS setting.
 
 ## Adding content
