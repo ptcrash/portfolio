@@ -13,14 +13,13 @@ import { url } from '../lib/url';
     <p>This is the work I make outside of work.</p>
 
     <p>
-      I build for communities I'm part of, mostly
-      <a href={url('/projects/gotham-brand-system')}>Gotham Knights RFC</a>, New York's LGBT
-      rugby club.
+      I build for communities I'm part of, mostly <a href={url('/projects/gotham-brand-system')}>Gotham Knights RFC</a>,
+      New York's LGBT rugby club.
     </p>
 
     <h2>Get in touch</h2>
     <p>
-      Email <a href={`mailto:${site.email}`}>{site.email}</a>, or find me on
+      Email <a href={`mailto:${site.email}`}>{site.email}</a>, or find me on{' '}
       {site.links.map((l, i) => (
         <>
           <a href={l.href} target="_blank" rel="me noopener">{l.label}</a>{i < site.links.length - 1 ? ', ' : '.'}
