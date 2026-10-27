@@ -33,7 +33,7 @@ const { Content } = await render(project);
       </div>
     </div>
 
-    {cover && <Image class="cover" src={cover} alt="" width={1400} widths={[700, 1400]} sizes="(min-width: 1100px) 1040px, 100vw" />}
+    {cover && <Image class="cover bleed" src={cover} alt="" width={1400} widths={[700, 1400]} sizes="(min-width: 1100px) 1040px, 100vw" />}
 
     <div class="prose body">
       <Content />
@@ -43,7 +43,7 @@ const { Content } = await render(project);
 
 <style>
   .lead {
-    font-size: 1.2rem;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
     max-width: var(--measure);
   }
 
@@ -62,10 +62,8 @@ const { Content } = await render(project);
   }
 
   .cover {
-    width: 100%;
     height: auto;
-    border-radius: var(--radius);
-    margin-bottom: 2rem;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
   }
 
   .body {

@@ -23,12 +23,6 @@ const featuredVideo = videos.find((v) => v.data.featured) ?? videos[0];
   <section class="hero">
     <h1>{site.name}</h1>
     <p class="lead">{site.tagline}</p>
-    <p class="muted prose">{site.description}</p>
-    <div class="actions">
-      <a class="button primary" href={url('/projects')}>See projects</a>
-      <a class="button" href={url('/photography')}>Photography</a>
-      <a class="button" href={url('/videography')}>Video</a>
-    </div>
   </section>
 
   {featuredProjects.length > 0 && (
@@ -61,7 +55,9 @@ const featuredVideo = videos.find((v) => v.data.featured) ?? videos[0];
         <h2>Video</h2>
         <a href={url('/videography')}>All videos</a>
       </div>
-      <VideoEmbed url={featuredVideo.data.url} title={featuredVideo.data.title} thumbnail={featuredVideo.data.thumbnail} />
+      <div class="bleed">
+        <VideoEmbed url={featuredVideo.data.url} title={featuredVideo.data.title} thumbnail={featuredVideo.data.thumbnail} />
+      </div>
       <p class="video-caption">
         <strong>{featuredVideo.data.title}</strong>
         {featuredVideo.data.description && <span class="muted"> — {featuredVideo.data.description}</span>}
@@ -72,19 +68,18 @@ const featuredVideo = videos.find((v) => v.data.featured) ?? videos[0];
 
 <style>
   .hero {
-    padding-block: clamp(1rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(1rem, 6vw, 4rem) 0;
+  }
+
+  .hero h1 {
+    margin-bottom: 0.35em;
   }
 
   .lead {
-    font-size: clamp(1.25rem, 2.5vw, 1.6rem);
-    margin-bottom: 0.5rem;
-  }
-
-  .actions {
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    color: var(--fg-muted);
+    max-width: var(--measure);
+    margin: 0;
   }
 
   .video-caption {

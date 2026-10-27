@@ -1,46 +1,47 @@
+/*
+ * Theme. Neutral greys, no accent colour: the photographs and project covers
+ * are the only colour on the page. Type is Forma DJR for display and text and
+ * Input Mono for metadata, both served from Adobe Fonts (see site.config.ts).
+ * The fallbacks are chosen to be close in width so layout holds without them.
+ */
 :root {
   color-scheme: light dark;
 
-  --bg: #fafaf9;
-  --bg-elevated: #ffffff;
-  --fg: #1c1917;
-  --fg-muted: #57534e;
-  --fg-faint: #a8a29e;
-  --line: #e7e5e4;
-  --accent: #b45309;
-  --accent-contrast: #ffffff;
+  --bg: #f4f4f4;
+  --bg-elevated: #ebebeb;
+  --fg: #111111;
+  --fg-muted: #666666;
+  --fg-faint: #a3a3a3;
+  --line: #d6d6d6;
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-display: 'forma-djr-display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-sans: 'forma-djr-text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'input-mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-  --measure: 68ch;
-  --container: 1120px;
+  --measure: 64ch;
+  --container: 1200px;
+  --bleed: 1400px;
   --gutter: clamp(16px, 4vw, 40px);
-  --radius: 8px;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0c0a09;
-    --bg-elevated: #1c1917;
-    --fg: #f5f5f4;
-    --fg-muted: #a8a29e;
-    --fg-faint: #57534e;
-    --line: #292524;
-    --accent: #fbbf24;
-    --accent-contrast: #0c0a09;
+  :root:not([data-theme='light']) {
+    --bg: #0a0a0a;
+    --bg-elevated: #161616;
+    --fg: #ebebeb;
+    --fg-muted: #8c8c8c;
+    --fg-faint: #4d4d4d;
+    --line: #262626;
   }
 }
 
-:root[data-theme="dark"] {
-  --bg: #0c0a09;
-  --bg-elevated: #1c1917;
-  --fg: #f5f5f4;
-  --fg-muted: #a8a29e;
-  --fg-faint: #57534e;
-  --line: #292524;
-  --accent: #fbbf24;
-  --accent-contrast: #0c0a09;
+:root[data-theme='dark'] {
+  --bg: #0a0a0a;
+  --bg-elevated: #161616;
+  --fg: #ebebeb;
+  --fg-muted: #8c8c8c;
+  --fg-faint: #4d4d4d;
+  --line: #262626;
 }
 
 *,
@@ -60,10 +61,11 @@ body {
   color: var(--fg);
   font-family: var(--font-sans);
   font-size: 1.0625rem;
-  line-height: 1.6;
+  line-height: 1.55;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  -webkit-font-smoothing: antialiased;
 }
 
 img,
@@ -75,25 +77,27 @@ iframe {
 
 a {
   color: inherit;
+  text-decoration-thickness: 1px;
   text-decoration-color: var(--fg-faint);
-  text-underline-offset: 0.15em;
+  text-underline-offset: 0.2em;
 }
 
 a:hover {
-  text-decoration-color: var(--accent);
+  text-decoration-color: var(--fg);
 }
 
 h1,
 h2,
 h3 {
-  line-height: 1.2;
-  letter-spacing: -0.015em;
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   margin: 0 0 0.5em;
-  font-weight: 600;
 }
 
 h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
 }
 
 h2 {
@@ -102,6 +106,7 @@ h2 {
 
 h3 {
   font-size: 1.25rem;
+  letter-spacing: -0.01em;
 }
 
 p {
@@ -110,24 +115,20 @@ p {
 
 code {
   font-family: var(--font-mono);
-  font-size: 0.9em;
+  font-size: 0.875em;
   background: var(--bg-elevated);
-  border: 1px solid var(--line);
-  border-radius: 4px;
   padding: 0.1em 0.35em;
 }
 
 pre {
   background: var(--bg-elevated);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
   padding: 1rem;
   overflow-x: auto;
+  font-size: 0.9rem;
 }
 
 pre code {
   background: none;
-  border: 0;
   padding: 0;
 }
 
@@ -147,24 +148,45 @@ main {
   color: var(--fg-muted);
 }
 
-.eyebrow {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+/* Metadata: dates, labels, breadcrumbs. Mono, small, sentence case. */
+.eyebrow,
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.5;
   color: var(--fg-muted);
-  margin-bottom: 0.5rem;
+}
+
+.eyebrow {
+  margin-bottom: 0.75rem;
+}
+
+.eyebrow a {
+  text-decoration: none;
+}
+
+.eyebrow a:hover {
+  color: var(--fg);
 }
 
 .prose {
   max-width: var(--measure);
 }
 
-.prose img {
-  border-radius: var(--radius);
+/*
+ * Images wider than the text column. Text sits at --measure, images stretch to
+ * the viewport edge minus the gutter, up to --bleed. The page gets a left-heavy
+ * asymmetry that reads as laid out rather than templated.
+ */
+.bleed {
+  width: min(100vw - 2 * var(--gutter), var(--bleed));
+  max-width: none;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
 .section {
-  margin-block: clamp(2.5rem, 7vw, 5rem);
+  margin-block: clamp(3rem, 8vw, 6rem);
 }
 
 .section-head {
@@ -179,54 +201,73 @@ main {
   margin: 0;
 }
 
+.section-head a {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+
+.section-head a:hover {
+  color: var(--fg);
+}
+
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.35rem;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .tags li {
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   color: var(--fg-muted);
   border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0.1rem 0.6rem;
+  padding: 0.15rem 0.5rem;
 }
 
 .button {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.55rem 1rem;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--bg-elevated);
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--fg-faint);
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
   text-decoration: none;
-  font-weight: 500;
 }
 
 .button:hover {
-  border-color: var(--accent);
+  border-color: var(--fg);
 }
 
 .button.primary {
-  background: var(--accent);
-  color: var(--accent-contrast);
-  border-color: var(--accent);
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
 }
 
+.button.primary:hover {
+  background: var(--fg-muted);
+  border-color: var(--fg-muted);
+}
+
+/* auto-fit, not auto-fill: a lone item stretches to the full width instead of
+   sitting in one third of an otherwise empty grid. */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: 2.5rem 2rem;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -16,6 +16,11 @@ to `main`.
 ## Make it yours
 
 1. **Your details**: edit `src/site.config.ts` (name, tagline, email, social links).
+2. **Fonts**: the theme is set for Forma DJR Display, Forma DJR Text, and Input Mono
+   from Adobe Fonts. Create a web project at fonts.adobe.com with those families,
+   add `ptcra.sh` and `localhost` to its domains, and paste the project ID into
+   `adobeFontsKit` in `src/site.config.ts`. Until then the site falls back to
+   Helvetica Neue and the system mono.
 2. **Bio**: edit `src/pages/about.astro`.
 3. **Favicon**: replace `public/favicon.svg` and `public/favicon.ico`.
 4. **Colors**: the palette is a handful of CSS variables at the top of
