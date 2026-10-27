@@ -13,6 +13,8 @@ const rendered = await Promise.all(videos.map((v) => render(v)));
   <p class="eyebrow">Videography</p>
   <h1>Video</h1>
 
+  {videos.length === 0 && <p class="muted">Nothing here yet.</p>}
+
   <div class="list">
     {videos.map((v, i) => {
       const { Content } = rendered[i];
