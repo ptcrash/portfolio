@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import { getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import PhotoGrid from '../../components/PhotoGrid.astro';
 import { getAlbums } from '../../lib/content';
@@ -16,6 +17,8 @@ const { title, description, date, location, cover } = album.data;
 const sections = sectionsForAlbum(album.id, album.data.sections);
 const photoCount = sections.reduce((n, s) => n + s.photos.length, 0);
 const { Content } = await render(album);
+// Social preview: a 1200px derivative, not the multi-megabyte master.
+const og = await getImage({ src: cover, width: 1200, format: 'jpeg', quality: 80 });
 
 if (photoCount === 0) {
   throw new Error(
@@ -24,7 +27,7 @@ if (photoCount === 0) {
 }
 ---
 
-<Base title={title} description={description} image={cover.src}>
+<Base title={title} description={description} image={og.src}>
   <p class="eyebrow">
     <a href={url('/photography')}>Photography</a> · {formatDate(date)}{location && ` · ${location}`}
   </p>

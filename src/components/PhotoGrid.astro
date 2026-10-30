@@ -10,18 +10,28 @@ const { sections } = Astro.props;
 const titled = sections.filter((s) => s.title);
 const showNav = titled.length > 1;
 
-// Pre-generate a large variant of every photo for the lightbox. Thumbnails in
-// the grid are produced by <Image> with a responsive srcset.
+// Pre-generate lightbox variants of every photo. Three widths so a phone does
+// not download the file sized for a 5K display. Thumbnails in the grid are
+// produced by <Image> with its own srcset.
+const LIGHTBOX_WIDTHS = [1600, 2400, 3200];
 const prepared = await Promise.all(
   sections.map(async (section) => {
     const n = section.photos.length;
     const photos = await Promise.all(
       section.photos.map(async (photo, i) => {
-        const full = await getImage({ src: photo.src, width: 2000, format: 'webp', quality: 82 });
+        const variants = await Promise.all(
+          LIGHTBOX_WIDTHS.filter((w) => w <= photo.src.width).map((w) =>
+            getImage({ src: photo.src, width: w, format: 'webp', quality: 85 }),
+          ),
+        );
+        if (variants.length === 0) {
+          variants.push(await getImage({ src: photo.src, format: 'webp', quality: 85 }));
+        }
         const position = section.title ? `${section.title} · ${i + 1} of ${n}` : `${i + 1} of ${n}`;
         return {
           ...photo,
-          full: full.src,
+          full: variants[variants.length - 1].src,
+          srcset: variants.map((v) => `${v.src} ${v.attributes.width}w`).join(', '),
           alt: photo.alt || (section.title ? `${section.title}, photo ${i + 1}` : `Photo ${i + 1}`),
           caption: photo.alt || position,
         };
@@ -53,14 +63,16 @@ let eagerBudget = 6;
           data-lightbox-item
           data-alt={photo.alt}
           data-caption={photo.caption}
+          data-srcset={photo.srcset}
           style={`--ar: ${(photo.src.width / photo.src.height).toFixed(4)}`}
         >
           <Image
             src={photo.src}
             alt={photo.alt}
             width={800}
-            widths={[400, 800, 1200]}
-            sizes="(min-width: 1100px) 360px, (min-width: 700px) 45vw, 100vw"
+            widths={[400, 800, 1200, 1600]}
+            sizes="(min-width: 1100px) 33vw, (min-width: 700px) 50vw, 100vw"
+            quality={82}
             loading={eagerBudget-- > 0 ? 'eager' : 'lazy'}
           />
         </a>
@@ -91,13 +103,18 @@ let eagerBudget = 6;
     const show = (i: number) => {
       index = (i + items.length) % items.length;
       const item = items[index];
+      img.sizes = '100vw';
+      img.srcset = item.dataset.srcset ?? '';
       img.src = item.href;
       img.alt = item.dataset.alt ?? '';
       caption.textContent = item.dataset.caption ?? '';
       // Warm the neighbours so arrow navigation feels instant.
       for (const n of [index + 1, index - 1]) {
         const neighbour = items[(n + items.length) % items.length];
-        new Image().src = neighbour.href;
+        const warm = new Image();
+        warm.sizes = '100vw';
+        warm.srcset = neighbour.dataset.srcset ?? '';
+        warm.src = neighbour.href;
       }
     };
 
