@@ -14,4 +14,8 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  image: {
+    // Keeps copyright metadata in generated images. See src/lib/image-service.ts.
+    service: { entrypoint: './src/lib/image-service.ts' },
+  },
 });
